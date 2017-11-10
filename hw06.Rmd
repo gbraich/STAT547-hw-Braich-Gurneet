@@ -1,0 +1,665 @@
+---
+title: "hw06"
+author: "Gb"
+date: '2017-11-03'
+output: 
+  html_document: 
+    keep_md: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(stringr)
+library(dplyr)
+```
+
+
+
+## 1. Character Data
+
+Read and work the exercises in the Strings chapter
+
+### Exercise 14.2.5
+1. In code that doesn’t use stringr, you’ll often see paste() and paste0(). What’s the difference between the two functions? What stringr function are they equivalent to? How do the functions differ in their handling of NA?
+
+```{r}
+#The difference between paste and paste0 is that paste0 includes the seperate function to remove "" while paste does not
+paste("A", "1", "z")
+paste("A", "1", "z", sep="")
+paste0("A", "1", "z")
+
+#Paste is most similar to stringr::str_c . str_c handles NA like it is infectious, so combining it with other functions also makes them missing values.  This can be remedied using the str_replace_na function.  Paste treats NA like any other value because it coerces NA character.
+paste("A", "1", NA, sep="")
+str_c("A", "1", NA)
+```
+
+2. In your own words, describe the difference between the sep and collapse arguments to str_c().
+
+```{r}
+#the difference between the sep and collapse arguments: sep is used to control how strings are seperated.  Collapse is used to collapse multiple strings into a single string
+
+str_c("A", "1", "z", sep="   ")
+str_c("A", "1", "z", collapse= ",")
+```
+
+
+3. Use str_length() and str_sub() to extract the middle character from a string. What will you do if the string has an even number of characters?
+
+```{r}
+x = "qrStu"
+y = "wxyz"
+
+str_length(x)
+str_sub(x, start= ((str_length(x)+1)/2), end=((str_length(x)+1)/2))
+str_length(y)
+str_sub(y, start= ((str_length(y)+1)/2), end=((str_length(y)+1)/2))
+# If the string has an even number of characters it will pick the smaller length value around the middle, that is, the character to the right of the middle.
+```
+
+
+4. What does str_wrap() do? When might you want to use it?
+
+```{r}
+# str_wrap takes a string, formats it for width, indent etc. and presents it as a paragraph. You might want to use it if you have a block of text where to want to introduce text breaks and remove any other formating (eg. \n etc.)
+```
+
+
+5. What does str_trim() do? What’s the opposite of str_trim()?
+
+```{r}
+str_trim("  Whats with all this extra space  ")
+str_pad(c("Lets", "get", "some", "space", "but", "evenly"), 8, "both" )
+# str_trim removes whitespace from the start and end of strings, and you can specify from both sides, left or right.  str_pad is the opposite and it adds whitespace around the strings either on the left, right or both sides.  You can also specify how much space.
+```
+
+6. Write a function that turns (e.g.) a vector c("a", "b", "c") into the string a, b, and c. Think carefully about what it should do if given a vector of length 0, 1, or 2.
+
+```{r}
+z = c("a", "b", "c")
+p= c("a", "b")
+q= c("a")
+
+# In order to do this I first established three different length vectors of 1,2, 3.  I then designed three different str_c functions that would return the desired strings.
+
+  str_c(q)
+str_c(p[[1]], " and ", p[[2]])
+str_c(z[1], ",", z[[2]],",", "and ", z[[length(z)]])
+
+# To make the function I needed to identify an input (X) and an output (Y).  I then developed three if statements depnding on the length of the string so it would use one of the three str_c functions I developed depending on the string length.
+
+my_function <- function(X){
+  Y <- ""
+  if(length(X)<2)
+  {
+    Y <-str_c(X)
+  }
+  else if (length(X)==2)
+  {
+    Y<- str_c(X[[1]], " and ", X[[2]])
+  }
+  else
+  {
+   Y <-str_c(X[1], ",", X[[2]],",", "and ", X[[length(X)]]) 
+  }
+  writeLines(Y)
+}
+  
+my_function(z)
+my_function(p)
+my_function(q)
+```
+### Exercises 14.3.1.1 
+
+Explain why each of these strings don’t match a \: "\", "\\", "\\\".
+
+```{r}
+# "\" is an escape, "\\" is used for regular expression and "\\\" is needed to to match a literal \ becuase it has a backslash to escapse it and two more to create a regular expression.
+
+a= "\\"
+a
+str_view(a, "\\\\")
+```
+
+
+How would you match the sequence "'\?
+
+```{r}
+b= "\"'\\"
+writeLines(b)
+str_view(b, "\\\"'\\\\")
+```
+
+
+What patterns will the regular expression \..\..\.. match? How would you represent it as a string?
+```{r}
+# It will match anything that has dots between the characters
+c = "a.b.c"
+writeLines(c)
+str_view(c, "\\..\\..\\..")
+```
+
+
+
+### Exercises 14.3.2.1
+
+1. How would you match the literal string "$^$"?
+
+```{r}
+# You could match it using the following
+d <- c("purple$^$rain", "$^$purplerain", "purplerain$^$")
+writeLines(d)
+str_view(d, "\\$\\^\\$") #all
+str_view(d, "^\\$\\^\\$") # at beginning
+str_view(d, "\\$\\^\\$$") #at the end
+```
+
+
+2. Given the corpus of common words in stringr::words, create regular expressions that find all words that:
+
+Start with “y”.
+End with “x”
+Are exactly three letters long. (Don’t cheat by using str_length()!)
+Have seven letters or more.
+Since this list is long, you might want to use the match argument to str_view() to show only the matching or non-matching words.
+
+```{r}
+str_view(words, "^y", match = TRUE) # starts with y
+str_view(words, "x$", match=TRUE) # ends with x
+str_view(words, "^...$", match=TRUE) #three letters - specify beginning and end with three letters in between
+str_view(words, ".......", match=TRUE) # seven or more letters -specify at least seven letters
+```
+
+### Exercises 14.3.3.1 
+
+Create regular expressions to find all words that:
+
+Start with a vowel.
+
+That only contain consonants. (Hint: thinking about matching “not”-vowels.)
+
+End with ed, but not with eed.
+
+End with ing or ise.
+
+Empirically verify the rule “i before e except after c”.
+
+Is “q” always followed by a “u”?
+
+Write a regular expression that matches a word if it’s probably written in British English, not American English.
+
+Create a regular expression that will match telephone numbers as commonly written in your country.
+
+```{r}
+#start with a vowel
+str_view(words, "^[aeiouy]", match=TRUE)
+
+#contain only consonants
+str_view(words, "^[^aeiouy]*$", match=TRUE)
+
+#end with ed
+str_view(words, "[^e]ed$", match=TRUE)
+
+#end with ing or ise
+str_view(words, "$ing|ise", match=TRUE)
+
+#i before e except after c always true? 
+#no, weight is counter to the rule
+str_view(words, "[^c]ei", match=TRUE)
+
+#q always followed by u?
+#Yes it is!
+str_view(words, "q[^u]", match=TRUE)
+
+#regular expression for a British English word
+str_view(words, "..our$", match=TRUE)
+
+#regular expression that will match telephone numbers as commonly written in your country
+e <-("780-555-3232, 91-783-45648, 604-555-7777")
+str_view_all(e, "\\d{3}-\\d{3}-\\d{4}", match=TRUE)
+```
+
+### Exercises 14.3.4.1 
+
+Describe the equivalents of ?, +, * in {m,n} form.
+
+```{r}
+f <- "1888 is the longest year in Roman numerals: MDCCCLXXXVIII"
+# ? = {1}
+# In this case C? is equivalent to C{1}
+str_view(f, "C?")
+str_view(f, "C{1}")
+
+# + = {1,}
+#In this case C+ is equivalent to C{1,}
+str_view(f, "C+")
+str_view(f, "C{1,}")
+
+# * = {0,}
+#In this case * is equivalent to C{0,}
+str_view(f, "C*")
+str_view(f, "C{0,}")
+```
+
+
+Describe in words what these regular expressions match: (read carefully to see if I’m using a regular expression or a string that defines a regular expression.)
+
+^.*$
+"\\{.+\\}"
+\d{4}-\d{2}-\d{2}
+"\\\\{4}"
+
+```{r}
+# ^.*$  will match anything, even if it is length zero
+# "\\{.+\\}" will match {(at least one character)}
+# \d{4}-\d{2}-\d{2} will match 4 digits-2 digits-2 digits
+# "\\\\{4}" will match \\\\
+```
+
+Create regular expressions to find all words that:
+
+Start with three consonants.
+Have three or more vowels in a row.
+Have two or more vowel-consonant pairs in a row.
+Solve the beginner regexp crosswords at https://regexcrossword.com/challenges/beginner.
+```{r}
+#begins with three consonants
+str_view(words, "^[^aeiouy]{3}", match=TRUE)
+
+#three or more vowels in a row
+str_view(words, "[aeiouy]{3,}", match=TRUE)
+
+#have two or more vowel-constant pairs in a row
+str_view(words, "([aeiouy][^aeiouy]){2,}", match=TRUE)
+```
+Solved beginner regexp crossword
+!['Solved beginners crossword'](/Users/Ginni/Desktop/crossword.png)
+
+### Exercises 14.3.5.1
+
+Describe, in words, what these expressions will match:
+
+(.)\1\1
+"(.)(.)\\2\\1"
+(..)\1
+"(.).\\1.\\1"
+"(.)(.)(.).*\\3\\2\\1"
+
+```{r}
+g <- "aaabcbbabbaabab"
+str_view(g, "(.)\\1\\1")
+str_view(g, "(.)(.)\\2\\1")
+str_view(g, "(..)\\1")
+h <- "bcbdb"
+str_view(h, "(.).\\1.\\1")
+i <- "abcdecba"
+str_view(i, "(.)(.)(.).*\\3\\2\\1")
+```
+
+Construct regular expressions to match words that:
+
+Start and end with the same character.
+
+Contain a repeated pair of letters (e.g. “church” contains “ch” repeated twice.)
+
+Contain one letter repeated in at least three places (e.g. “eleven” contains three “e”s.)
+
+```{r}
+#words begin and end with the same letter
+str_view(words, "^(.).*\\1$", match=TRUE)
+
+#Contain a repeated pair of letters
+str_view(words, "(..).*\\1", match=TRUE)
+
+#Contain one letter repeated in at least three places
+str_view(words, "(.).*\\1.*\\1", match=TRUE)
+```
+
+### Exercises 14.4.2
+
+For each of the following challenges, try solving it by using both a single regular expression, and a combination of multiple str_detect() calls.
+
+Find all words that start or end with x.
+
+Find all words that start with a vowel and end with a consonant.
+
+Are there any words that contain at least one of each different vowel?
+
+What word has the highest number of vowels? What word has the highest proportion of vowels? (Hint: what is the denominator?)
+
+```{r}
+# Find all words that start or end with x
+str_view(words, "^x|x$", match=TRUE)
+words[str_detect(words, "^x") | str_detect(words, "x$")]
+
+#Find all words that start with a vowel and end with a consonant
+str_view(words, "^[aeiouy].*[^aeiouy]$", match=TRUE)
+words[str_detect(words, "^[aeiouy]") & str_detect(words, "[^aeiouy]$")]
+
+#Are there any words that contain at least one of each different vowel?
+# too complicated with str_view, use str_detect
+hasA= str_detect(words, "a")
+hasE= str_detect(words, "e")
+hasI= str_detect(words, "i")
+hasO= str_detect(words, "o")
+hasU= str_detect(words, "u")
+words[hasA & hasE & hasI & hasO]
+words[hasA & hasE & hasI & hasU]
+# a couple words with 4 vowels
+words[hasA & hasE & hasI & hasO & hasU]
+#no words that contain all five vowels
+
+#what word has the highest number of vowels? highest proportion of vowels?
+vowelcount =str_count(words, "[aeiouy]")
+wordlength= str_length(words)
+
+answer <-tibble(words = words, vowelcount = vowelcount, wordlengths = wordlength)
+
+answer %>%
+  arrange(desc(vowelcount))
+
+answer %>%
+  mutate(proportion = vowelcount / wordlength) %>%
+  arrange(desc(proportion))
+#Multiple words have upto 5 vowels. The highest proportion of vowels in a word is 100% (eg. a, eye, you)
+```
+
+### Exercises 14.4.3.1
+
+In the previous example, you might have noticed that the regular expression matched “flickered”, which is not a colour. Modify the regex to fix the problem.
+
+From the Harvard sentences data, extract:
+
+The first word from each sentence.
+All words ending in ing.
+All plurals.
+
+```{r}
+#Modify regex to make sure flickered doesn't match. We need to make it so that colours only regonizes colours and not the when a colour is a subset of another word (eg. red in flickered).  To do this we need to modify regex so it doesn't recognize words nested in words, I added word boundary anchors that I learned about from this [stackoverflow thread](https://stackoverflow.com/questions/7227976/using-grep-in-r-to-find-strings-as-whole-words-but-not-strings-as-part-of-words)
+
+colours <- c("red", "orange", "yellow", "green", "blue", "purple")
+colour_match <- str_c(colours, collapse = "|")
+colour_match
+has_colour <- str_subset(sentences, colour_match)
+matches <- str_extract(has_colour, colour_match)
+head(matches)
+more <- sentences[str_count(sentences, colour_match) > 1]
+str_view_all(more, colour_match)
+
+testcolour <- c("\\bred\\b", "\\borange\\b", "\\byellow\\b", "\\bgreen\\b", "\\bblue\\b", "\\bpurple\\b")
+colour_match_test <- str_c(testcolour, collapse = "|")
+colour_match_test
+has_colour_test <- str_subset(sentences, colour_match_test)
+matches_test <- str_extract_all(has_colour_test, colour_match_test)
+head(matches_test)
+more_test <- sentences[str_count(sentences, colour_match_test) > 1]
+str_view_all(more_test, colour_match_test)
+```
+```{r}
+#From the Harvard sentences data, extract:
+#The first word from each sentence.
+sentences %>% 
+  head(10)
+str_extract(sentences, "[^ ]+") %>% 
+  head(10)
+
+#All words ending in ing.
+ing_words <- str_subset(sentences, "[^ ]+ing[ .]")
+str_extract(ing_words, "[^ ]+ing[ .]") %>% 
+  head(10)
+
+#All plurals.
+s_words <- str_subset(sentences, "[^ ]+s[ .]")
+str_extract(s_words, "[^ ]+s[ .]") %>% 
+  head(10)
+
+#here we can see that our strategy isn't working because other types of words are being recognized as plural. We are only interested in plural words such as nouns which have a possessive or article in front but do not include words with a contracted s or that naturally end in s
+
+is_noun <- str_subset(sentences, "(the|their|her|his|our|my) [^ \\.\\'&^ \\.\\s$]+")
+nouns <- str_extract(is_noun, "(the|their|her|his|our|my) [^ \\.\\'&^ \\.\\s$]+")
+is_plural <- str_subset(nouns, "(the|their|her|his|our|my) [^ \\.\\'& ^ \\.\\s$]+[s]$")
+str_extract(is_plural, "(the|their|her|his|our|my) [^ \\.\\'&^ \\.\\s$]+[s]$")
+```
+
+### Exercises 14.4.4.1
+
+Find all words that come after a “number” like “one”, “two”, “three” etc. Pull out both the number and the word.
+
+Find all contractions. Separate out the pieces before and after the apostrophe.
+
+```{r}
+#after a number
+afternumber <- "(one|two|three|four|five|six|seven|eight|nine|ten) ([^ ]+)"
+
+has_number <- sentences %>% 
+  str_subset(afternumber) %>% 
+  head(10)
+has_number %>% 
+  str_extract(afternumber)
+has_number %>% 
+  str_match (afternumber)
+
+#find all contractions
+contra <- "([^ ]+\\'[^ ]+)"
+
+has_contra <- sentences %>% 
+  str_subset(contra) %>% 
+  head(10)
+has_contra %>%
+  str_extract(contra)
+head(tibble(sentence= sentences) %>%
+  tidyr::extract(
+    sentence, c("word", "before apos", "after apos"), "(([^ ]+)\\'([^ ]+))",
+    remove=FALSE
+  ) %>% drop_na())
+  
+```
+
+### Exercises 14.4.5.1
+
+Replace all forward slashes in a string with backslashes.
+
+Implement a simple version of str_to_lower() using replace_all().
+
+Switch the first and last letters in words. Which of those strings are still words?
+```{r}
+#Replace forward slashes with backslashes
+string ="Face/off"
+writeLines(string)
+writeLines(str_replace(string, "/", "\\\\"))
+
+#Implement simple verison of str_to_lower using replace_all()
+string2="ALpHaBETsOUp"
+str_replace_all(string2, c("A"="a", "B"="b", "E"="e", "L"="l", "H"="h", "T"="t", "O"="o", "U"="u"))
+
+#Switch the first and last letter in words, which are still words?
+mixedwords <- words %>%
+  str_replace("^(.)(.*)(.)$", "\\3\\2\\1")
+words[words %in% mixedwords]
+```
+
+### Exercises 14.4.6.1
+
+Split up a string like "apples, pears, and bananas" into individual components.
+
+Why is it better to split up by boundary("word") than " "?
+
+What does splitting with an empty string ("") do? Experiment, and then read the documentation.
+
+```{r}
+#Split string
+string3 <- "apples, pears and bananas"
+string3 %>% 
+  str_split(" ")
+
+#It's better to split by boundary(word) than " " because than only words get counted as indvidual components and it doesn't include whitespaces
+
+#split empty string, returns zero character
+string4= ""
+string4 %>% 
+  str_split("")
+```
+
+### Exercises 14.5.1
+
+How would you find all strings containing \ with regex() vs. with fixed()?
+
+What are the five most common words in sentences?
+
+```{r}
+#regex vs fixed
+strings4 = c("lala", "jaja", "tata\\", "sha\\shaa")
+str_view(strings4, regex("\\\\"))
+str_view(strings4, fixed("\\"))
+
+#five most common words in sentences
+commonwords <- str_split(sentences, boundary("word"), simplify = T)
+tibble(words = str_to_lower(commonwords)) %>%
+  group_by(words) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>%
+  head(5)
+```
+
+### Exercises 14.7.1
+
+Find the stringi functions that:
+
+Count the number of words.
+Find duplicated strings.
+Generate random text.
+How do you control the language that stri_sort() uses for sorting?
+```{r}
+library(stringi)
+```
+
+
+```{r}
+#count number of words
+apropos("count")
+string5= "Lets test this function"
+stri_count(string5, regex="\\p{L}+")
+
+#Find duplicated strings
+apropos("duplicate")
+string6= c("t", "e", "l", "e", "p", "h", "o", "n", "e")
+stri_duplicated(string6)
+stri_duplicated(string6, fromLast=TRUE)
+stri_duplicated_any(string6)
+
+#Generate random text
+apropos("rand")
+stri_rand_strings(6, 10)
+stri_rand_lipsum(1)
+
+#control language stri_sort uses for sorting?
+#stri_sort sorts vector according to lexicographic order, can specify the locale which can change alphabet order 
+stri_sort(c("hello", "change"), locale="en_EN")
+stri_sort(c("hello", "change"), locale="sk_SK")
+```
+
+## 4. Work with singer data
+
+### Use Purrr to map latitute and longitude
+
+First we will need to clean up the dataframe to extract the information we need.  We will select only the variables we are interested in for the next few tasks(artist_name, longitude, latitude, city) and remove the NAs and duplicates. For this we will use select to pick out variables of interest, arrange to specify how we want the dataframe to be presented (alphabetical order), na.omit to remove NAs and distinct to remove duplicate lines of artists. I used only the head(20) to avoid too many queries into googlemaps.
+I then used purrr::map_df and purrr::possibly (after getting some help from the office hours, thanks Joey and Gulio!).  I used possibly as a wrap around the function (revgeocode) and specified NA character so no errors would appear with the long/lat data was missing.  This function was plugged into map2_df along with the two variables.
+I also used a second method to compare where I also used the possibly function and plugged it into lapply and made a tibble with nest lists. For this second approach I found help from [stackoverflow](https://stackoverflow.com/questions/22911642/applying-revgeocode-to-a-list-of-longitude-latitude-coordinates)
+
+```{r}
+library(singer)
+library(ggmap)
+library(dplyr)
+library(magrittr)
+library(listviewer)
+library(knitr)
+library(kableExtra)
+
+#clean up singer_locations df
+df_sl<-singer_locations %>% 
+  select(artist_name, longitude, latitude, city) %>% 
+  arrange(artist_name) %>% 
+  na.omit() %>% 
+  distinct() %>% 
+  head(20)
+str(df_sl)
+df_sl
+
+#Method using purrr::map function and possibly.  We get an easy to work with dataframe!
+rgc_pos_xy <- possibly(~ revgeocode(c(.x,.y), output = "more"),
+                     NA_character_, quiet = TRUE)
+
+suppressWarnings(
+out_rgc <- df_sl %$%
+  map2_df(longitude, latitude, rgc_pos_xy)
+)
+
+out_rgc %>% 
+  kable("html") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+
+
+#Method 2- Use purrr::possibly, lapply and create a new nested df
+rgc_poss <- possibly(~ revgeocode(as.numeric(df_sl[.x, 2:3]), output = "all"),
+                     NA_character_, quiet = TRUE)
+
+address <- lapply(1:nrow(df_sl),
+                        function(i) rgc_poss(i)
+                          )
+address_df <- tibble::enframe(address)
+
+listviewer::jsonedit(address_df)
+
+```
+ 
+
+### Check if the place in city corresponds to information retrieved.  
+We can see that it's in totally different format so let's try to clean up the city data from singer locations so see if we can improve the number of matches.  For cleaning the data I used stringr functions to lowercase all cities, remove digits, remove any words after a comma (eg. gilbert, arizona), get rid of any other punctuation
+ 
+```{r}
+#Clean up cities data from singer_locations and out_rgc dfs
+
+(city_sl <- df_sl$city %>% 
+  str_to_lower() %>% 
+  str_replace_all("\\d+,", "") %>%
+  str_replace_all(", [^ ]+", "") %>%
+  str_replace_all("-", ""))
+
+(geo_city <- out_rgc$locality %>% 
+  str_to_lower())
+
+#Compare cities using %in%
+geo_city [city_sl %in% geo_city]
+
+#Compare cities using str_subset
+(cities <- str_subset(city_sl, geo_city))
+```
+ 
+### Plot information about the bands with 'leaflet'
+ To tackle this task I downloaded and loaded the library for leaflet and read up on the leaftlet material.I decided to add a little flair by making a unique icon and since we are dealing with music artists I made the icon a musical note and included some clustering and zoom options, using the helpful guidance on the [leaflet website](https://rstudio.github.io/leaflet/markers.html). I then used the singer locations data that already has long and latitude values to map the artists names.  The package is quite intelligent and was able to omit any NAs or duplicates.  I doubled checked a couple artist names to make sure they are showing up on the map correctly.  For example Tom Cochrane shows up in Manitoba, success!  I will be using mapping functions quite a bit in my PhD work so I really enjoyed this part of the assignment!
+```{r}
+library(leaflet)
+
+musicIcon <- makeIcon(
+  iconUrl = "https://d30y9cdsu7xlg0.cloudfront.net/png/3191-200.png",
+  iconWidth = 10, iconHeight = 10,
+  iconAnchorX = 10, iconAnchorY = 10)
+
+singer_locations %>%  
+  leaflet()  %>%   
+  addTiles() %>%  
+  addMarkers(popup = ~artist_name, icon = musicIcon, clusterOptions = markerClusterOptions())
+```
+ 
+
+## Reflections
+
+- The exercises in R for Data Science: Strings were very useful, I hope to go back in my freetime and do more exercises from other chapters
+
+- Using map functions are really helpful to simplfy code, I used both map and an lapply function to find the geocodes of artists and map was a lot easier to read and compute and made a much easier to use dataframe of nested lists.  Map also let me decided what the output would be formatted as
+
+- Messy data is a headache.  I tried to clean up the `city` variable in singer_locations the best I could but it was simply too messy and inconsistent in how data was entered.  Using str_subset was good to find some nested data
+
+- Leaflet is great!

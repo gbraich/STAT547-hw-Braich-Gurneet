@@ -18,4 +18,4 @@ My primary research interests are in the areas of agriculture and food security,
 
 Homework Assignment submission | Folder |Description
 ------------------------------|----------------|-------------------------------------
-[HW06 Data wrangling wrap up](https://github.com/gbraich/STAT545-hw-Braich-Gurneet/blob/master/hw01/hw01_gapminder.md) | [HW06](https://github.com/gbraich/STAT545-hw-Braich-Gurneet/tree/master/hw01) | Work with character data, writing functions, lists, nested data frames
+[HW06 Data wrangling wrap up](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw06/hw06.md) | [HW06](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/tree/master/hw06) | Work with character data, writing functions, lists, nested data frames

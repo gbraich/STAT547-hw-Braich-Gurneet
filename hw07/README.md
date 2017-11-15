@@ -6,10 +6,10 @@
 * [Makefile](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Makefile)
 * [Step 1 Download Data](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step01-DownloadData.R)
 * [Step 2 Tidy Data](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step02-DataTidying.R)
-* [Step 3 Aggregate Plots] (https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step03-AggregatingPlots.R)
-* [Step 4 LOTR Report Rmd] (https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.Rmd)
-* [Step 4 LOTR Report md] (https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.md)
-* [Step 4 LOTR Report html] (https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.html)
+* [Step 3 Aggregate Plots](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step03-AggregatingPlots.R)
+* [Step 4 LOTR Report Rmd](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.Rmd)
+* [Step 4 LOTR Report md](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.md)
+* [Step 4 LOTR Report html](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.html)
 
 ***
 ### How the pipeline works

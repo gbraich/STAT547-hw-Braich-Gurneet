@@ -106,6 +106,12 @@ glimpse(lotr_data_clean)
 ## $ Words          <int> 6, 7, 12, 19, 37, 38, 47, 48, 52, 81, 84, 4, 5,...
 ```
 
+Import our clean dataset
+
+```r
+lotr_data_clean <- read.delim("lotr_clean.tsv")
+```
+
 Here is a plot I embedded about which race does the most talking in the films
 ![barchart of total words by Race](barchart_total-words-by-race.png)
 
@@ -121,7 +127,7 @@ plot1 <- lotr_data_clean %>%
 print(plot1)
 ```
 
-![](Step04-lotrreport_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](Step04-lotrreport_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 # The Nine Companions
 
@@ -169,6 +175,6 @@ plyr::d_ply(characterwords, ~Film, function(p){
 })
 ```
 
-![](Step04-lotrreport_files/figure-html/unnamed-chunk-8-1.png)<!-- -->![](Step04-lotrreport_files/figure-html/unnamed-chunk-8-2.png)<!-- -->![](Step04-lotrreport_files/figure-html/unnamed-chunk-8-3.png)<!-- -->
+![](Step04-lotrreport_files/figure-html/unnamed-chunk-9-1.png)<!-- -->![](Step04-lotrreport_files/figure-html/unnamed-chunk-9-2.png)<!-- -->![](Step04-lotrreport_files/figure-html/unnamed-chunk-9-3.png)<!-- -->
 
 

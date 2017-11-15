@@ -56,6 +56,11 @@ lotr_data_clean <- ldcs2 %>%
 glimpse(lotr_data_clean)
 ```
 
+Import our clean dataset
+```{r}
+lotr_data_clean <- read.delim("lotr_clean.tsv")
+```
+
 Here is a plot I embedded about which race does the most talking in the films
 ![barchart of total words by Race](barchart_total-words-by-race.png)
 

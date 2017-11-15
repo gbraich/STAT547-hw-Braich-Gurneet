@@ -13,7 +13,7 @@ lotr_data_split <- data.frame(do.call(rbind, strsplit(as.vector(lotr_data$Chapte
 names(lotr_data_split) <- c("Chapter_Number", "Chapter_Name")
 lotr_data_clean_split <- cbind(lotr_data$Film, lotr_data_split, lotr_data$Character, lotr_data$Race, lotr_data$Words)
 ldcs2<- plyr::rename(lotr_data_clean_split, c("lotr_data$Film"="Film", "lotr_data$Character"="Character", "lotr_data$Race"="Race", "lotr_data$Words"="Words"))
-ldcs2
+
 
 #reoder Film factor levels
 old_levels <- levels(ldcs2$Film)

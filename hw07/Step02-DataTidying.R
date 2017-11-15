@@ -38,9 +38,6 @@ glimpse(lotr_data_clean)
 
 ##Make a plot about which race does the most talking by film
 
-lotr_dat %>% 
-	ggplot(aes(Race, Words)) +geom_col() + facet_wrap(~Film)
-	
 plot1 <- lotr_data_clean %>% 
 	ggplot(aes(Race, Words)) + 
 	geom_col() +

@@ -52,7 +52,7 @@ lotr_data_clean <- ldcs2 %>%
 		   "Race" = plyr::revalue(Race, c(Ainur="Wizard", Men="Man"))) %>% 
 	filter(!(Race %in% c("Gollum", "Orc", "Ent", "Dead", "Nazgul"))) %>% 
 	mutate(Race = reorder(Race, Words, sum)) %>% 
-	arrange(Race,Film, Words) %>% 
+	arrange(Race,Film, Character, Words) %>% 
 	droplevels
 glimpse(lotr_data_clean)
 ```
@@ -68,26 +68,25 @@ plot1 <- lotr_data_clean %>%
 print(plot1)
 ```
 
-Here the pre-made plot from above that I am embedding in the compiled document.
-![barchart of total words by Race](barchart_total_words_by_race.png)
+the pre-made plot from above that I am embedding in the compiled document.
+
 
 # The Nine Companions
 
 Filter to show total words spoken by the Nine Companions
 
 ```{r}
-library(plyr)
 fellowship <- c("Gandalf", "Aragorn", "Merry", "Pippin", "Frodo", "Sam", "Gimli", "Legolas", "Boromir")
-characterwords <- lotr_data_clean %>% 
+(characterwords <- lotr_data %>% 
 	filter(Character %in% fellowship) %>% 
 	group_by(Character, Film) %>% 
-	summarize(sum(Words))
+	summarize(sum(Words)))
 ```
 
 For each Film, show a plot of words by fellowship member
 
 ```{r}
-d_ply(characterwords, ~Film, function(p){
+plyr::d_ply(characterwords, ~Film, function(p){
 	the_film <- p$Film[1]
 	R <- ggplot(p, aes(Character, `sum(Words)`))+ 
 		geom_col() +

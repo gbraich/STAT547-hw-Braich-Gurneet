@@ -1,22 +1,22 @@
 #Makefile for LOTR Words Analysis
 
-all: final_lotr_report.html
+all: Step04-lotrreport.html
 
 lotr_raw.tsv:
-	Rscript Step_01-Download_Data.R
+	Rscript Step01-DownloadData.R
 
-lotr_clean.tsv barchart_total_words_by_race_by_film.png Step_02-Data_Tidying.html:Step_02-Data_Tidying.R lotr_raw.tsv
+lotr_clean.tsv barchart_total_words_by_race_by_film.png Step02-DataTidying.html:Step02-DataTidying.R lotr_raw.tsv
 	Rscript -e "rmarkdown::render('$<')"
 	
-total-words-by-Companion.tsv: lotr_clean.tsv Step_03-Aggregating_Plots.R
-	Rscript Step_03-Aggregating_Plots.R
+total-words-by-Companion.tsv: lotr_clean.tsv Step03-AggregatingPlots.R
+	Rscript Step03-AggregatingPlots.R
 	rm Rplots.pdf
 
-Step_04-lotr_report.html: Step_04-lotr_report.Rmd lotr_raw.tsv barchart_total-words-by-race.png
+Step04-lotrreport.html: Step04-lotrreport.Rmd lotr_raw.tsv barchart_total_words_by_race_by_film.png
 	Rscript -e "rmarkdown::render('$<')"
 
 clean:
-	rm -rf *.tsv *.png 0*.md *.html 03_lotr-report_files
+	rm -rf *.tsv *.png 0*.md *.html Step_04-lotr_report_files
 
 test: all
 	$(MAKE) -Bnd | ./make2graph | dot

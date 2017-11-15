@@ -1,0 +1,101 @@
+---
+output:
+  html_document:
+    keep_md: yes
+---
+LOTR R Markdown file
+========================================================
+
+This R Markdown file presents the original data, the statistical summaries and all figures generated.
+
+# Data Tidying and Preliminary Analysis
+
+Load libraries
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(stringr)
+```
+
+Import data
+
+```{r}
+lotr_data <- read.delim("lotr_raw.tsv")
+glimpse(lotr_data)
+```
+
+Make Chapter column into two columns (number and name) and rename columns after binding together
+
+```{r}
+lotr_data_split <- data.frame(do.call(rbind, strsplit(as.vector(lotr_data$Chapter), split = ":")))
+names(lotr_data_split) <- c("Chapter_Number", "Chapter_Name")
+lotr_data_clean_split <- cbind(lotr_data$Film, lotr_data_split, lotr_data$Character, lotr_data$Race, lotr_data$Words)
+ldcs2<- plyr::rename(lotr_data_clean_split, c("lotr_data$Film"="Film", "lotr_data$Character"="Character", "lotr_data$Race"="Race", "lotr_data$Words"="Words"))
+ldcs2
+```
+
+Reorder Film factor levels
+
+```{r}
+old_levels <- levels(ldcs2$Film)
+j_order <- sapply(c("Fellowship", "Towers", "Return"),
+				  function(x) grep(x, old_levels))
+new_levels <- old_levels[j_order]
+```
+
+Clean up dataset: apply new factor levels to Film, change name of races, drop less frequent races, arrange based on race,film, words
+
+```{r}
+lotr_data_clean <- ldcs2 %>% 
+	mutate("Film" = factor(as.character(Film), new_levels),
+		   "Race" = plyr::revalue(Race, c(Ainur="Wizard", Men="Man"))) %>% 
+	filter(!(Race %in% c("Gollum", "Orc", "Ent", "Dead", "Nazgul"))) %>% 
+	mutate(Race = reorder(Race, Words, sum)) %>% 
+	arrange(Race,Film, Words) %>% 
+	droplevels
+glimpse(lotr_data_clean)
+```
+
+Here is a plot about which race does the most talking by film
+
+```{r}
+plot1 <- lotr_data_clean %>% 
+	ggplot(aes(Race, Words)) + 
+	geom_col() +
+	facet_wrap(~Film) +
+	labs(y="Total Words Spoken") 
+print(plot1)
+```
+
+Here the pre-made plot from above that I am embedding in the compiled document.
+![barchart of total words by Race](barchart_total_words_by_race.png)
+
+# The Nine Companions
+
+Filter to show total words spoken by the Nine Companions
+
+```{r}
+library(plyr)
+fellowship <- c("Gandalf", "Aragorn", "Merry", "Pippin", "Frodo", "Sam", "Gimli", "Legolas", "Boromir")
+characterwords <- lotr_data_clean %>% 
+	filter(Character %in% fellowship) %>% 
+	group_by(Character, Film) %>% 
+	summarize(sum(Words))
+```
+
+For each Film, show a plot of words by fellowship member
+
+```{r}
+d_ply(characterwords, ~Film, function(p){
+	the_film <- p$Film[1]
+	R <- ggplot(p, aes(Character, `sum(Words)`))+ 
+		geom_col() +
+		theme(axis.text.x=element_text (angle=270)) +
+		labs(y="Total Words Spoken", x= "Nine Companions")+
+		ggtitle(the_film)
+	print(R)
+})
+```
+
+

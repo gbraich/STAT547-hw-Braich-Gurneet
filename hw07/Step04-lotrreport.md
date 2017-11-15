@@ -113,7 +113,7 @@ lotr_data_clean <- read.delim("lotr_clean.tsv")
 ```
 
 Here is a plot I embedded about which race does the most talking in the films
-![barchart of total words by Race](barchart_total-words-by-race.png)
+![barchart of total words by Race](Images/barchart_total-words-by-race.png)
 
 Here are plots that show words spoken by races, facetted by film
 

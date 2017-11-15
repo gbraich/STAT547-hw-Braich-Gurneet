@@ -19,7 +19,7 @@ clean:
 	rm -rf *.tsv *.png 0*.md *.html Step04-lotrreport_files
 
 test: all
-	$(MAKE) -Bnd | make2graph | dot -Tpng -o out.png
+	$(MAKE) -Bnd | make2graph | dot -Tpng -o Images/makefile2graphlotr.png
 	PATH=.:$(PATH) makefile2graph
 
 

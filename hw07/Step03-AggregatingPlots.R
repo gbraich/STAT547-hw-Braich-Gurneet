@@ -32,7 +32,7 @@ plyr::d_ply(characterwords, ~Film, function(p){
 		ggtitle(the_film)
 	print(R)
 	the_film <- gsub(" ", "-", the_film)
-	ggsave(paste0("barchart_words-by-companion_", the_film, ".png"))
+	ggsave(paste0("Images/barchart_words-by-companion_", the_film, ".png"))
 })
 
 

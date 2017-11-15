@@ -106,8 +106,10 @@ glimpse(lotr_data_clean)
 ## $ Words          <int> 6, 7, 12, 19, 37, 38, 47, 48, 52, 81, 84, 4, 5,...
 ```
 
-Here is a plot about which race does the most talking by film
+Here is a plot I embedded about which race does the most talking in the films
 ![barchart of total words by Race](barchart_total-words-by-race.png)
+
+Here are plots that show words spoken by races, facetted by film
 
 
 ```r
@@ -120,9 +122,6 @@ print(plot1)
 ```
 
 ![](Step04-lotrreport_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
-
-the pre-made plot from above that I am embedding in the compiled document.
-
 
 # The Nine Companions
 

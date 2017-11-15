@@ -56,8 +56,10 @@ lotr_data_clean <- ldcs2 %>%
 glimpse(lotr_data_clean)
 ```
 
-Here is a plot about which race does the most talking by film
+Here is a plot I embedded about which race does the most talking in the films
 ![barchart of total words by Race](barchart_total-words-by-race.png)
+
+Here are plots that show words spoken by races, facetted by film
 
 ```{r}
 plot1 <- lotr_data_clean %>% 
@@ -67,9 +69,6 @@ plot1 <- lotr_data_clean %>%
 	labs(y="Total Words Spoken") 
 print(plot1)
 ```
-
-the pre-made plot from above that I am embedding in the compiled document.
-
 
 # The Nine Companions
 

@@ -10,7 +10,8 @@
 * [Step 4 LOTR Report Rmd](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.Rmd)
 * [Step 4 LOTR Report md](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.md)
 * [Step 4 LOTR Report html](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Step04-lotrreport.html)
-
+* [Make2file Graph](https://github.com/gbraich/STAT547-hw-Braich-Gurneet/blob/master/hw07/Images/makefile2graphlotr.png)
+![](https://raw.githubusercontent.com/gbraich/STAT547-hw-Braich-Gurneet/master/hw07/Images/makefile2graphlotr.png)
 ***
 ### How the pipeline works
 * Step01-DownloadData.R

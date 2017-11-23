@@ -2,12 +2,13 @@
 library(shiny)
 library(tidyverse)
 library(plotly)
+library(leaflet)
 
 
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel(h1("City Selector: Where in world should you live?")),
+  titlePanel(h1("City Selector: Where in the world should you live?")),
   
   sidebarPanel(h3("What should we consider?"),
                br(),
@@ -37,15 +38,19 @@ shinyUI(fluidPage(
                            value= c(10,20), post="C"),
   			 downloadLink('downloadData', 'Download')),
   
-  mainPanel(plotlyOutput("distplot"),
-  		  br(),br(),
+  mainPanel(
+  	tabsetPanel(
+  		tabPanel("Plot", plotlyOutput("distplot"),
+  		  br(),
+  		  br(),
   		  textOutput("answertext"),
-  		  br(),br(),
-            tableOutput("table_head"),
-            br(),
-            "When I designed this dataset and website I drew inspiration from a recent",
-            a(href="https://xkcd.com/1916/", "xkcd comic"),
-            br(),
-            br(),
-            img(src='xkcd.png', align = "centre", height = 600, width = 600))))
+  		  br(),
+  		  "When I designed this dataset and website I drew inspiration from a recent",
+  		  a(href="https://xkcd.com/1916/", "xkcd comic"),
+  		  br(),
+  		  br(),
+  		  img(src='xkcd.png', align = "centre", height = 600, width = 600)),
+  		  tabPanel("Table", tableOutput("table_head")),
+  		tabPanel("Map", leafletOutput("mymap"))
+            ))))
 

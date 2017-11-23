@@ -3,8 +3,9 @@ library(shiny)
 library(tidyverse)
 library(ggplot2)
 library(plotly)
+library(leaflet)
 
-# Define server logic required to draw a histogram
+
 shinyServer(function(input, output) {
   city_data <- read_csv("data/finalcitydata.csv")
   
@@ -43,14 +44,22 @@ shinyServer(function(input, output) {
   	paste(nrow(Filtered_city()), "cities meet your criteria")
   })
   output$table_head <- renderTable({
-    Filtered_city() %>% 
-      head()
+    Filtered_city()
+  })
+  output$mymap <- renderLeaflet({
+  	Filtered_city() %>%  
+  		leaflet()  %>%   
+  		addProviderTiles(providers$Stamen.TonerLite,
+  						 options = providerTileOptions(noWrap = TRUE)
+  		) %>%  
+  		addMarkers(label= ~City)
   })
   output$downloadData <- downloadHandler(
   	filename = function() {
-  	paste(city_data,".csv", sep="")
+  	paste("city_data",".csv", sep="")
   	},
   	content = function(file) {
   	write.csv(Filtered_city(), file, row.names = FALSE)
   	})
 })
+Filtered_city

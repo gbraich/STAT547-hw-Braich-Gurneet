@@ -34,7 +34,8 @@ shinyUI(fluidPage(
                            value= c(1,10), post="C"),
                sliderInput("tmaxIn", "Mean Daily Maximum Temperature",
                            min=0, max=30, 
-                           value= c(10,20), post="C")),
+                           value= c(10,20), post="C"),
+  			 downloadLink('downloadData', 'Download')),
   
   mainPanel(plotlyOutput("distplot"),
   		  br(),br(),

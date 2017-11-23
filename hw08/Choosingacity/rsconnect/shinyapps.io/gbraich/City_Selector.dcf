@@ -5,8 +5,8 @@ account: gbraich
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 239080
-bundleId: 1091357
+bundleId: 1091510
 url: https://gbraich.shinyapps.io/City_Selector/
-when: 1511392282.3195
+when: 1511400213.95198
 asMultiple: FALSE
 asStatic: FALSE

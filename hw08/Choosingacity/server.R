@@ -45,5 +45,12 @@ shinyServer(function(input, output) {
   output$table_head <- renderTable({
     Filtered_city() %>% 
       head()
-  }) 
+  })
+  output$downloadData <- downloadHandler(
+  	filename = function() {
+  	paste(city_data,".csv", sep="")
+  	},
+  	content = function(file) {
+  	write.csv(Filtered_city(), file, row.names = FALSE)
+  	})
 })

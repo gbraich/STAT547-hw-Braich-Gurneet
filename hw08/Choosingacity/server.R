@@ -62,4 +62,3 @@ shinyServer(function(input, output) {
   	write.csv(Filtered_city(), file, row.names = FALSE)
   	})
 })
-Filtered_city

@@ -39,7 +39,9 @@ shinyServer(function(input, output) {
       annotate("text", x = 0.5, y = -5, label = "Dry and Cold") +
       annotate("text", x = 6, y = -5, label = "Wet and Cold")
   })
-  
+  output$answertext <- renderText({
+  	paste(nrow(Filtered_city()), "cities meet your criteria")
+  })
   output$table_head <- renderTable({
     Filtered_city() %>% 
       head()

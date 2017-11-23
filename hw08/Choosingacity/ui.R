@@ -37,7 +37,9 @@ shinyUI(fluidPage(
                            value= c(10,20), post="C")),
   
   mainPanel(plotlyOutput("distplot"),
-            br(),br(),
+  		  br(),br(),
+  		  textOutput("answertext"),
+  		  br(),br(),
             tableOutput("table_head"),
             br(),
             "When I designed this dataset and website I drew inspiration from a recent",

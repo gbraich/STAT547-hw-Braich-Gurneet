@@ -1,0 +1,12 @@
+name: City_Selector
+title: City_Selector
+username:
+account: gbraich
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 239080
+bundleId: 1091357
+url: https://gbraich.shinyapps.io/City_Selector/
+when: 1511392282.3195
+asMultiple: FALSE
+asStatic: FALSE

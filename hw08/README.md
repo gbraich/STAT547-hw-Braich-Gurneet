@@ -14,7 +14,7 @@
 ### Build a Shiny App!
 * For a challenge I created my own dataset which was a lot of work!  I was inspired by the comic below and wanted to try out some new packages and start working with weather data
 * For the App I added several sliders to change around population size, ranking and weather
-* Other specifications I made included adding html elements, labels etc, render text etc
+* Other specifications I made included adding html elements, labels etc, render text, added a download link etc.
 * I did alot of research into making my plot more informative using the links below and used plotly to have 'hover' data and some other tricks to make quadrants, add labels etc.
 	* [Plotly](https://stackoverflow.com/questions/38917101/how-do-i-show-the-y-value-on-tooltip-while-hover-in-ggplot2)
 	* [Quadrants](https://stackoverflow.com/questions/24190431/adding-quadrants-to-r-scatterplots-and-lines-pointing-from-plots-to-their-respe)

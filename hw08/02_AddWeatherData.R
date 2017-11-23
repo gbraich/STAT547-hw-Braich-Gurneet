@@ -6,7 +6,7 @@ library(magrittr)
 library(readr)
 
 
-#Load data
+#Load data from previous R script
 
 finalcitylist <- read_csv("finalcitylist.csv")
 

@@ -25,7 +25,7 @@
 
 - This assignment made me realize that package writing is an important tool, and also helped me get more comfortable with function writing too!
 
--I used a couple of resources including:
+- I used a couple of resources including:
         - [Vincenzo's powers package](https://github.com/vincenzocoia/powers)
         - [Jenny's foofactors package](https://github.com/jennybc/foofactors)
         - [Extra information on testing](http://r-pkgs.had.co.nz/tests.html)

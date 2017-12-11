@@ -1,4 +1,4 @@
-# Stat547 Homework 07 Submission for G.Braich
+# Stat547 Homework 10 Submission for G.Braich
 ***
 
 ### What's in the Directory?
@@ -28,7 +28,7 @@
 	
 * Step03- Add Weather Data
 	* Imported cleaned data
-	* Used [geocodes](https://www.rdocumentation.org/packages/ggmap/versions/2.6.1/topics/geocode) package which is a google maps API to retrieve latitude and longitude
+	* Used `geocodes` in  [ggmap](https://www.rdocumentation.org/packages/ggmap/versions/2.6.1/topics/geocode) package which is a google maps API to retrieve latitude and longitude
 	* Used [rnoaa](https://cran.r-project.org/web/packages/rnoaa/index.html) package which uses the National Climate Data Centres API to retrieve weather station IDs based on lat/lon and pull precipitation and temperature data for up to 60 years (I used 10 years of daily data which was averaged)
 	* Bind ranking, city, population, geolocation and weather data into a final dataframe
 	* Write cleaned data to file
